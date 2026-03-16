@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     // initialize parameters from launch file or command line.
     nh.param("server", server, string("127.0.0.1"));
     nh.param("rate_limit", rate_limit, 10.0);
-    nh.param("parent_frame", parent_frame, string("qualisys"));
+    nh.param("parent_frame", parent_frame, string("odom"));
 
     try
     {
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
                             }
 							*/
 
-							/*
+							
                             // publish pose stamped message
                             {
                                 if (pub_pose.find(name) == pub_pose.end()) {
@@ -231,35 +231,35 @@ int main(int argc, char **argv)
                                 msg.pose.orientation.w = q.w();
                                 pub_pose[name].publish(msg);
                             }
-							*/
+							
 
                             // publish odom message
-                            {
-                                if (pub_odom.find(name) == pub_odom.end()) {
-                                    ROS_INFO("rigid body %s odom added", name.c_str());
-                                    pub_odom[name] = nh.advertise<nav_msgs::Odometry>(name + "/odom", queue_size);
-                                }
-                                nav_msgs::Odometry msg;
-                                msg.header.frame_id= parent_frame;
-                                msg.header.stamp = now;
-                                msg.child_frame_id=name;
-                                for (int i=0; i < 36; i++) msg.pose.covariance[i] = NAN;
-                                msg.pose.pose.position.x = x;
-                                msg.pose.pose.position.y = y;
-                                msg.pose.pose.position.z = z;
-                                msg.pose.pose.orientation.x = q.x();
-                                msg.pose.pose.orientation.y = q.y();
-                                msg.pose.pose.orientation.z = q.z();
-                                msg.pose.pose.orientation.w = q.w();
-                                for (int i=0; i < 36; i++) msg.twist.covariance[i] = NAN;
-                                msg.twist.twist.linear.x = NAN;
-                                msg.twist.twist.linear.y = NAN;
-                                msg.twist.twist.linear.z = NAN;
-                                msg.twist.twist.angular.x = NAN;
-                                msg.twist.twist.angular.y = NAN;
-                                msg.twist.twist.angular.z = NAN;
-                                pub_odom[name].publish(msg);
-                            }
+                            // {
+                            //     if (pub_odom.find(name) == pub_odom.end()) {
+                            //         ROS_INFO("rigid body %s odom added", name.c_str());
+                            //         pub_odom[name] = nh.advertise<nav_msgs::Odometry>(name + "/odom", queue_size);
+                            //     }
+                            //     nav_msgs::Odometry msg;
+                            //     msg.header.frame_id= parent_frame;
+                            //     msg.header.stamp = now;
+                            //     msg.child_frame_id=name;
+                            //     for (int i=0; i < 36; i++) msg.pose.covariance[i] = NAN;
+                            //     msg.pose.pose.position.x = x;
+                            //     msg.pose.pose.position.y = y;
+                            //     msg.pose.pose.position.z = z;
+                            //     msg.pose.pose.orientation.x = q.x();
+                            //     msg.pose.pose.orientation.y = q.y();
+                            //     msg.pose.pose.orientation.z = q.z();
+                            //     msg.pose.pose.orientation.w = q.w();
+                            //     for (int i=0; i < 36; i++) msg.twist.covariance[i] = NAN;
+                            //     msg.twist.twist.linear.x = NAN;
+                            //     msg.twist.twist.linear.y = NAN;
+                            //     msg.twist.twist.linear.z = NAN;
+                            //     msg.twist.twist.angular.x = NAN;
+                            //     msg.twist.twist.angular.y = NAN;
+                            //     msg.twist.twist.angular.z = NAN;
+                            //     pub_odom[name].publish(msg);
+                            // }
                         }
                     }
                 }
